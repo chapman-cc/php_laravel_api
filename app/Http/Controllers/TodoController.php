@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TodoResource;
 use App\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +17,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return response(Todo::all(), 200);
+        return response(TodoResource::collection(Todo::all()), 200);
     }
 
     /**
@@ -46,7 +47,7 @@ class TodoController extends Controller
         $validatedData['todo_id'] = Uuid::uuid4();
         $todo = Todo::create($validatedData);
 
-        return response($todo, 201);
+        return response(new TodoResource($todo), 201);
     }
 
     /**
@@ -57,7 +58,7 @@ class TodoController extends Controller
      */
     public function show(Todo $todo)
     {
-        return response($todo, 200);
+        return response(new TodoResource($todo), 200);
     }
 
     /**
@@ -95,7 +96,7 @@ class TodoController extends Controller
         }
         $todo->update($validatedData);
 
-        return response($todo, 201);
+        return response(new TodoResource($todo), 201);
     }
 
     /**
