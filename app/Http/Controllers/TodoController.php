@@ -47,9 +47,6 @@ class TodoController extends Controller
         $todo = Todo::create($validatedData);
 
         return response($todo, 201);
-    
-        // $validatedData['todo_id'] = Uuid::uuid4();
-
     }
 
     /**
@@ -72,14 +69,33 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-        $todo->todo = $request->input('todo');
-        if ($request->boolean('completed')){
-            $todo->completed = now();
-        } else {
-            $todo->completed = null;
+        // * code w/o validation
+        // $todo->todo = $request->input('todo');
+        // if ($request->boolean('completed')){
+        //     $todo->completed = now();
+        // } else {
+        //     $todo->completed = null;
+        // }
+        // $todo->save();
+        // return response($todo, 200);
+
+        // * code w/ validation
+        $validator = Validator::make($request->all(), [
+            'todo' => ['required', 'max:255'],
+            'completed' => ['nullable', 'boolean']
+        ]);
+        if ($validator->fails()) {;
+            return redirect('/')->withErrors($validator)->withInput();
         }
-        $todo->save();
-        return response($todo, 200);
+        $validatedData = $validator->validate();
+        if ($validatedData['completed']) {
+            $validatedData['completed'] = now();
+        } else {
+            $validatedData['completed'] = null;
+        }
+        $todo->update($validatedData);
+
+        return response($todo, 201);
     }
 
     /**
