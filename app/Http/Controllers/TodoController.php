@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Todo;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Uuid;
 
 class TodoController extends Controller
 {
@@ -14,7 +15,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return Todo::all();
+        return response(Todo::all(), 200);
     }
 
     /**
@@ -25,7 +26,12 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $todo = new Todo();
+        $todo->todo = $request->todo;
+        $todo->todo_id = Uuid::uuid4();
+        $todo->save();
+        
+        return response($todo,201);
     }
 
     /**
@@ -36,7 +42,7 @@ class TodoController extends Controller
      */
     public function show(Todo $todo)
     {
-        //
+        return response($todo, 200);
     }
 
     /**
@@ -48,7 +54,9 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-        //
+        $todo->todo = $request->input('todo');
+        $todo->save();
+        return response($todo, 200);
     }
 
     /**
@@ -59,6 +67,7 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
-        //
+        $todo->delete();
+        return response(null, 204);
     }
 }

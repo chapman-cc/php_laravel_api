@@ -19,7 +19,9 @@ class TodoMigration extends Migration
             $table->uuid('todo_id');
             $table->timestamps();
             $table->string('todo');
-            $table->timestamp('completed')->nullable();
+            $table->timestamp('completed')
+                            ->nullable()
+                            ->default(NULL);
         });
     }
 
