@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 
 class TodoController extends Controller
@@ -26,12 +27,29 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        $todo = new Todo();
-        $todo->todo = $request->todo;
-        $todo->todo_id = Uuid::uuid4();
-        $todo->save();
+        // * code w/o validation
+        // $todo = new Todo();
+        // $todo->todo = $request->todo;
+        // $todo->todo_id = Uuid::uuid4();
+        // $todo->save();
         
-        return response($todo,201);
+        // return response($todo,201);
+
+        // * code w/ validation
+        $validator = Validator::make($request->all(), [
+            'todo' => ['required', 'max:255']
+        ]);
+        if ($validator->fails()) {;
+            return redirect('/')->withErrors($validator)->withInput();
+        }
+        $validatedData = $validator->validate();
+        $validatedData['todo_id'] = Uuid::uuid4();
+        $todo = Todo::create($validatedData);
+
+        return response($todo, 201);
+    
+        // $validatedData['todo_id'] = Uuid::uuid4();
+
     }
 
     /**
