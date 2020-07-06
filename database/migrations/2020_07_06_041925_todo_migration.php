@@ -13,10 +13,10 @@ class TodoMigration extends Migration
      */
     public function up()
     {
-        Schema::create('todos', function(Blueprint $table){
+        Schema::create('todo', function(Blueprint $table){
             // $table->bigIncrements('id')->autoIncrement();
             $table->id();
-            $table->uuid('todoid');
+            $table->uuid('todo_id');
             $table->timestamps();
             $table->string('todo');
             $table->timestamp('completed')->nullable();
@@ -30,6 +30,6 @@ class TodoMigration extends Migration
      */
     public function down()
     {
-        Schema::drop('todos');
+        Schema::dropIfExists('todo');
     }
 }

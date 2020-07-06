@@ -18,4 +18,4 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::apiResource('todo', "TodoController");
+Route::apiResource('todos', "TodoController");
