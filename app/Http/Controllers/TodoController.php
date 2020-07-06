@@ -55,6 +55,11 @@ class TodoController extends Controller
     public function update(Request $request, Todo $todo)
     {
         $todo->todo = $request->input('todo');
+        if ($request->boolean('completed')){
+            $todo->completed = now();
+        } else {
+            $todo->completed = null;
+        }
         $todo->save();
         return response($todo, 200);
     }
