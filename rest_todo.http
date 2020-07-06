@@ -12,6 +12,14 @@ Content-Type: : application/json
     "todo": "Adding a new todo"
 }
 
+### Add new Todo w/o content
+POST http://localhost:8000/api/todos HTTP/1.1
+Content-Type: : application/json
+
+{
+    "todo": null
+}
+
 ### Update a toodo
 PUT http://localhost:8000/api/todos/2 HTTP/1.1
 Content-Type: : application/json
