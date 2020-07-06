@@ -1,0 +1,22 @@
+### Retrieve all todos
+GET http://localhost:8000/api/todos HTTP/1.1
+
+### Retrieve single todo
+GET http://localhost:8000/api/todos/2  HTTP/1.1
+
+### Add new Todo
+POST http://localhost:8000/api/todos HTTP/1.1
+Content-Type: : application/json
+
+{
+    "todo": "Adding a new todo"
+}
+
+### Update a toodo
+PUT http://localhost:8000/api/todos/2 HTTP/1.1
+Content-Type: : application/json
+
+{
+    "todo": "altering this todo text",
+    "completed": true
+}
