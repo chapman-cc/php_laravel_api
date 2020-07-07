@@ -7,13 +7,16 @@ This is the 7th project for TeamTreehouse's PHP Tech Degree, a Laravel API endpo
 ## How to start
 
 after cloning the project, run
-```composer.phar install```
+
+`composer.phar install`
 
 then, migrate the database
-```php artisan migrate:fresh```
+
+`php artisan migrate:fresh`
 
 then, seed the tables
-```php artisan db:seed```
+
+`php artisan db:seed`
 
 ## Seed Http Request with Rest_Client
 
