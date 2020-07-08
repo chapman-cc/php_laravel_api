@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\TodoResource;
 use App\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 
@@ -16,9 +17,7 @@ class TodoController extends Controller
         'boolean' => 'it must be TRUE or FALSE, is it that hard?'
     ];
 
-    protected function responseWithErrorMessages($validator) {
-        return response($validator->errors()->all(), 400);
-    }
+    private $validator;
 
     /**
      * Display a listing of the resource.
@@ -47,13 +46,13 @@ class TodoController extends Controller
         // return response($todo,201);
 
         // * code w/ validation
-        $validator = Validator::make($request->all(), [
+        $this->validator = Validator::make($request->all(), [
             'todo' => ['required', 'max:255']
         ], self::ERROR_MESSAGES);
-        if ($validator->fails()) {;
-            return $this->responseWithErrorMessages($validator);
+        if ($this->validator->fails()) {;
+            return $this->responseWithErrorMessages();
         }
-        $validatedData = $validator->validate();
+        $validatedData = $this->validator->validate();
         $validatedData['todo_id'] = Uuid::uuid4();
         $todo = Todo::create($validatedData);
 
@@ -91,14 +90,14 @@ class TodoController extends Controller
         // return response($todo, 200);
 
         // * code w/ validation
-        $validator = Validator::make($request->all(), [
+        $this->validator = Validator::make($request->all(), [
             'todo' => ['required', 'max:255'],
             'completed' => ['nullable', 'boolean']
         ], self::ERROR_MESSAGES);
-        if ($validator->fails()) {;
-            return $this->responseWithErrorMessages($validator);
+        if ($this->validator->fails()) {;
+            return $this->responseWithErrorMessages();
         }
-        $validatedData = $validator->validate();
+        $validatedData = $this->validator->validate();
         if ($validatedData['completed']) {
             $validatedData['completed'] = now();
         } else {
@@ -119,5 +118,14 @@ class TodoController extends Controller
     {
         $todo->delete();
         return response(null, 204);
+    }
+
+    /**
+     * Return error response messages
+     * 
+     * @return \Illuminate\Http\Response w/ validated errors messages
+     */
+    private function responseWithErrorMessages() {
+        return response($this->validator->errors()->all(), 400);
     }
 }
