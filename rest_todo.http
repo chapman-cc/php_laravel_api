@@ -17,14 +17,31 @@ POST http://localhost:8000/api/todos HTTP/1.1
 Content-Type: : application/json
 
 {
-    "todo": null
+    "todo": ""
 }
 
-### Update a toodo
+### Add new Todo w/ super long content
+POST http://localhost:8000/api/todos HTTP/1.1
+Content-Type: : application/json
+
+{
+    "todo": "THIS IS A LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG TODO"
+}
+
+### Update a todo
 PUT http://localhost:8000/api/todos/2 HTTP/1.1
 Content-Type: : application/json
 
 {
     "todo": "altering this todo text",
     "completed": true
+}
+
+### Update a todo without content
+PUT http://localhost:8000/api/todos/2 HTTP/1.1
+Content-Type: : application/json
+
+{
+    "todo": "",
+    "completed": false
 }

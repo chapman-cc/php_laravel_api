@@ -10,6 +10,16 @@ use Ramsey\Uuid\Uuid;
 
 class TodoController extends Controller
 {
+    const ERROR_MESSAGES = [
+        'required' => 'Your EVIL SCHEME is missing a :attribute!', 
+        'max' => 'Your EVIL SCHEME is TOO LOOOOOOOONG',
+        'boolean' => 'it must be TRUE or FALSE, is it that hard?'
+    ];
+
+    protected function responseWithErrorMessages($validator) {
+        return response($validator->errors()->all(), 400);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -39,9 +49,9 @@ class TodoController extends Controller
         // * code w/ validation
         $validator = Validator::make($request->all(), [
             'todo' => ['required', 'max:255']
-        ]);
+        ], self::ERROR_MESSAGES);
         if ($validator->fails()) {;
-            return redirect('/')->withErrors($validator)->withInput();
+            return $this->responseWithErrorMessages($validator);
         }
         $validatedData = $validator->validate();
         $validatedData['todo_id'] = Uuid::uuid4();
@@ -84,9 +94,9 @@ class TodoController extends Controller
         $validator = Validator::make($request->all(), [
             'todo' => ['required', 'max:255'],
             'completed' => ['nullable', 'boolean']
-        ]);
+        ], self::ERROR_MESSAGES);
         if ($validator->fails()) {;
-            return redirect('/')->withErrors($validator)->withInput();
+            return $this->responseWithErrorMessages($validator);
         }
         $validatedData = $validator->validate();
         if ($validatedData['completed']) {
